@@ -1,95 +1,89 @@
+"use client"
 import Image from "next/image";
-import styles from "./page.module.css";
-
+import "./page.css";
+import bgImage from "@/faq-accordion-main/assets/images/background-pattern-desktop.svg"
+import starIcon from "@/faq-accordion-main/assets/images/icon-star.svg"
+import { useState } from "react";
+const questionsData = [
+  {
+    question: "What is Frontend Mentor, and how will it help me?",
+    response: "Frontend Mentor offers realistic coding challenges to help developers improve their frontend coding skills with projects in HTML, CSS, and JavaScript. lt's suitable for all levels and ideal for portfolio building."
+  }, {
+    question: "Is Frontend Mentor free?",
+    response: "Yes, Frontend Mentor offers both free and premium coding challenges, with the free option providing access to a range of projects suitable for all skill levels."
+  }, {
+    question: "Can I use Frontend Mentor projects in my portfolio?",
+    response: "Yes, you can use projects completed on Frontend Mentor in your portfolio. It's an excellent way to showcase your skills to potential employers!"
+  }, {
+    question: "How can I get help if I'm stuck on a Frontend Mentor challenge?",
+    response: "The best place to get help is inside Frontend Mentor's Discord community. There's a help channel where you can ask questions and seek support from other community members."
+  },
+]
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
+  const [questionDataState, setQuestionDataState] = useState(questionsData)
+
+  const RenderQuestions = (props) => {
+    const { id, question, response } = props
+    return (
+      <details key={id}>
+        <summary>
+          <p>{question}</p>
+          <span className="summary-icon-container">
+            <span className="summary-icon icon-1"></span>
+            <span className="summary-icon icon-2"></span>
+          </span>
+        </summary>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+          <p>{response}</p>
+        </div>
+      </details>
+    )
+  }
+
+  function insertFAQ() {
+    let questionP = prompt("What's the question?")
+    let responseP = prompt("What's the Response?")
+
+    if (!questionP || !responseP) {
+      return
+    }
+
+    let newData = { question: questionP, response: responseP }
+    setQuestionDataState((prevState) => [...prevState, newData])
+  }
+
+  return (
+    <main>
+      <span className="bg-background">
+        <Image
+          src={bgImage}
+        />
+      </span>
+      <div className="container-item">
+        <div className="title-container">
+          <Image
+            src={starIcon}
+          />
+          <h1>FAQs</h1>
+        </div>
+        <div className="questions-container">
+          {questionDataState.map((qData, index) => (
+            <RenderQuestions
+              id={index}
+              question={qData.question}
+              response={qData.response}
             />
-          </a>
+          ))}
         </div>
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <button 
+        onClick={() => insertFAQ()}
+        className="add-your-question-btn"
+      >
+        Add Your FAQ
+      </button>
     </main>
   );
 }
